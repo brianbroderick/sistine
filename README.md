@@ -1,18 +1,26 @@
 # Sistine
 
-To start your Phoenix server:
+This touches a table by updating id=id. It doesn't change any data, but it causes the tuple to be written to the WAL and
+restreamed out to anyone subscribed to the WAL. 
 
-  * Setup the project with `mix setup`
-  * Start Phoenix endpoint with `mix phx.server`
+Example: 
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+`$ mix touch --table <table> --repo <repo_name>`
+`$ mix touch --table paintings --repo Sistine.Repo`
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Vacuums are built in
 
-## Learn more
+If we vacuum often, it will minimize table bloat since every updated row is rewritten to the bottom of the data file. Normally, PG will run a vacuum when 20% of the table's records have been changed. Since we're touching an entire table, the auto vacuum won't be able to keep up. Because of this, we'll want to run it ourselves and let it finish before resuming additional updates. 
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+We also run a checkpoint before running the vacuum to make sure all of the data is present in the data file before cleaning it up.
+
+## To Run:
+
+You'll need Erlang, Elixir, and Postgres installed. The versions for Erlang and Elixir are in .tool-versions. Currently I'm using PG10 though anything past 9.6 should be fine. 
+
+Next, run: 
+
+* `mix ecto.create`
+* `mix ecto.migrate`
+* `mix run priv/repo/seeds.exs`
+* `mix touch --table paintings --repo Sistine.Repo`
