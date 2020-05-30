@@ -24,3 +24,9 @@ Next, run:
 * `mix ecto.migrate`
 * `mix run priv/repo/seeds.exs`
 * `mix touch --table paintings --repo Sistine.Repo`
+
+## Tests
+
+I believe the test doesn't work because Ecto doesn't commit transactions when it runs tests. I'm testing that it works by looking at the "last_modified_at" column. This has a trigger that updates when the row is updated. Since the transaction doesn't commit, the trigger isn't getting run. 
+
+I could change the tests to not use the Sandbox, but that doesn't help if this example gets used in other repos. I don't want to change any of the actual data because that defeats the point of simply "touching" the record. 
