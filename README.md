@@ -3,10 +3,10 @@
 This touches a table by updating id=id. It doesn't change any data, but it causes the tuple to be written to the WAL and
 restreamed out to anyone subscribed to the WAL. 
 
-Example: 
+Examples: 
 
-`$ mix touch --table <table> --repo <repo_name>`
-`$ mix touch --table paintings --repo Sistine.Repo`
+* `$ mix touch --table <table> --repo <repo_name>`
+* `$ mix touch --table paintings --repo Sistine.Repo`
 
 ## Vacuums are built in
 
