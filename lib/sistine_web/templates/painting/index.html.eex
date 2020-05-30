@@ -1,0 +1,28 @@
+<h1>Listing Paintings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Artist</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for painting <- @paintings do %>
+    <tr>
+      <td><%= painting.name %></td>
+      <td><%= painting.artist %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.painting_path(@conn, :show, painting) %></span>
+        <span><%= link "Edit", to: Routes.painting_path(@conn, :edit, painting) %></span>
+        <span><%= link "Delete", to: Routes.painting_path(@conn, :delete, painting), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Painting", to: Routes.painting_path(@conn, :new) %></span>
